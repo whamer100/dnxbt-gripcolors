@@ -44,8 +44,15 @@
 
 ### Linux
 
+Set up a venv
 ```bash
-sudo pip3 install nxbt
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+```
+Install DNXBT
+```bash
+pip install https://github.com/PrincessAmi/dnxbt/archive/refs/heads/master.zip
 ```
 
 **Please Note:** NXBT needs root privileges to toggle the BlueZ Input plugin. If you're not comfortable running this program as root, you can disable the Input plugin manually, and install NXBT as a regular user.
