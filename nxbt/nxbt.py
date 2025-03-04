@@ -499,6 +499,7 @@ class Nxbt():
 
     def create_controller(self, controller_type, adapter_path=None,
                           colour_body=None, colour_buttons=None,
+                          colour_grip_left=None, colour_grip_right=None,
                           reconnect_address=None):
         """Used to create a Nintendo Switch controller of a
         given type and colour on an (optionally) specified
@@ -526,6 +527,14 @@ class Nxbt():
         represented by a hexadecimal colour value (a list of
         three ints (0-255)), defaults to None
         :type colour_buttons: list, optional
+        :param colour_grip_left: The left grip colour of the controller
+        represented by a hexadecimal colour value (a list of
+        three ints (0-255)), defaults to None
+        :type colour_grip_left: list, optional
+        :param colour_grip_right: The right grip colour of the controller
+        represented by a hexadecimal colour value (a list of
+        three ints (0-255)), defaults to None
+        :type colour_grip_right: list, optional
         :param reconnect_address: A previously connected to
         Switch's Bluetooth MAC address, defaults to None
         :type reconnect_address: str or list, optional
@@ -561,6 +570,8 @@ class Nxbt():
                     "adapter_path": adapter_path,
                     "colour_body": colour_body,
                     "colour_buttons": colour_buttons,
+                    "colour_grip_left": colour_grip_left,
+                    "colour_grip_right": colour_grip_right,
                     "reconnect_address": reconnect_address,
                 }
             })
