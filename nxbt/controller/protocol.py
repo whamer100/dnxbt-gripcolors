@@ -43,7 +43,8 @@ class ControllerProtocol():
     VIBRATOR_BYTES = [0xA0, 0xB0, 0xC0, 0x90]
 
     def __init__(self, controller_type, bt_address, report_size=50,
-                 colour_body=None, colour_buttons=None):
+                 colour_body=None, colour_buttons=None, 
+                 colour_grip_left=None, colour_grip_right=None):
         """Initializes the protocol for the controller.
 
         :param controller_type: The type of controller (Joy-Con (L),
@@ -59,6 +60,12 @@ class ControllerProtocol():
         :param colour_buttons: Sets the colour of the controller buttons,
         defaults to None
         :type colour_buttons: list of bytes, optional
+        :param colour_grip_left: Sets the colour of the left controller grip,
+        defaults to None
+        :type colour_grip_left: list of bytes, optional
+        :param colour_grip_right: Sets the colour of the right controller grip,
+        defaults to None
+        :type colour_grip_right: list of bytes, optional
         :raises ValueError: On unknown controller type
         """
 
@@ -127,6 +134,14 @@ class ControllerProtocol():
             self.colour_buttons = [0x0F] * 3
         else:
             self.colour_buttons = colour_buttons
+        if not colour_grip_left:
+            self.colour_grip_left = [0xFF] * 3
+        else:
+            self.colour_grip_left = colour_grip_left
+        if not colour_grip_right:
+            self.colour_grip_right = [0xFF] * 3
+        else:
+            self.colour_grip_right = colour_grip_right
 
     def get_report(self):
 
@@ -408,7 +423,12 @@ class ControllerProtocol():
                 self.report, 24, 3,
                 replace_arr=self.colour_buttons)
             # Left/right grip colours (Pro controller)
-            replace_subarray(self.report, 27, 7, 0xFF)
+            replace_subarray(self.report, 27, 3, 
+                             replace_arr=self.colour_grip_left)
+            replace_subarray(self.report, 30, 3, 
+                             replace_arr=self.colour_grip_right)
+            # i dont know why this last one is set to 0xFF, im keeping it because im scared to remove it
+            replace_subarray(self.report, 33, 1, 0xFF)
 
         # Factory sensor/stick device parameters
         elif addr_top == 0x60 and addr_bottom == 0x80:
@@ -484,6 +504,11 @@ class ControllerProtocol():
             replace_subarray(
                 self.report, 43, 3,
                 replace_arr=self.colour_buttons)
+            # Left/right grip colours (Pro controller) (might not be needed?)
+            replace_subarray(self.report, 46, 3, 
+                             replace_arr=self.colour_grip_left)
+            replace_subarray(self.report, 49, 3, 
+                             replace_arr=self.colour_grip_right)
 
         # Six-Axis motion sensor factor calibration
         elif addr_top == 0x60 and addr_bottom == 0x20:
