@@ -244,6 +244,8 @@ class Nxbt():
                             msg["arguments"]["adapter_path"],
                             msg["arguments"]["colour_body"],
                             msg["arguments"]["colour_buttons"],
+                            msg["arguments"]["colour_grip_left"],
+                            msg["arguments"]["colour_grip_right"],
                             msg["arguments"]["reconnect_address"])
                     elif msg["command"] == NxbtCommands.INPUT_MACRO:
                         cm.input_macro(
@@ -720,6 +722,7 @@ class _ControllerManager():
 
     def create_controller(self, index, controller_type, adapter_path,
                           colour_body=None, colour_buttons=None,
+                          colour_grip_left=None, colour_grip_right=None,
                           reconnect_address=None):
         """Instantiates a given controller as a multiprocessing
         Process with a shared state dict and a task queue.
@@ -739,6 +742,12 @@ class _ControllerManager():
         :param colour_buttons: A list of three ints representing the
         hex colour of the controller, defaults to None
         :type colour_buttons: list, optional
+        :param colour_grip_left: A list of three ints representing the
+        hex colour of the left grip, defaults to None
+        :type colour_grip_left: list, optional
+        :param colour_grip_right: A list of three ints representing the
+        hex colour of the right grip, defaults to None
+        :type colour_grip_right: list, optional
         :param reconnect_address: The address of a Nintendo Switch
         to reconnect to, defaults to None
         :type reconnect_address: str, optional
@@ -753,6 +762,8 @@ class _ControllerManager():
         controller_state["direct_input"] = json.loads(json.dumps(DIRECT_INPUT_PACKET))
         controller_state["colour_body"] = colour_body
         controller_state["colour_buttons"] = colour_buttons
+        controller_state["colour_grip_left"] = colour_grip_left
+        controller_state["colour_grip_right"] = colour_grip_right
         controller_state["type"] = str(controller_type)
         controller_state["adapter_path"] = adapter_path
         controller_state["last_connection"] = None
@@ -767,7 +778,9 @@ class _ControllerManager():
                                   state=controller_state,
                                   task_queue=controller_queue,
                                   colour_body=colour_body,
-                                  colour_buttons=colour_buttons)
+                                  colour_buttons=colour_buttons,
+                                  colour_grip_left=colour_grip_left,
+                                  colour_grip_right=colour_grip_right)
         controller = Process(target=server.run, args=(reconnect_address,))
         controller.daemon = True
         self._children[index] = controller

@@ -159,7 +159,9 @@ def demo():
             PRO_CONTROLLER,
             adapters[i],
             colour_body=random_colour(),
-            colour_buttons=random_colour())
+            colour_buttons=random_colour(),
+            colour_grip_left=random_colour(),
+            colour_grip_right=random_colour())
         controller_idxs.append(index)
 
     # Run a macro on the last controller
@@ -216,7 +218,9 @@ def test():
                  PRO_CONTROLLER,
                  adapters[0],
                  colour_body=random_colour(),
-                 colour_buttons=random_colour())
+                 colour_buttons=random_colour(),
+                 colour_grip_left=random_colour(),
+                 colour_grip_right=random_colour())
     except Exception as e:
         print("Failed to create a controller:")
         print(traceback.format_exc())
@@ -280,6 +284,8 @@ def macro():
         PRO_CONTROLLER,
         colour_body=random_colour(),
         colour_buttons=random_colour(),
+        colour_grip_left=random_colour(),
+        colour_grip_right=random_colour(),
         reconnect_address=reconnect_target)
     print("Waiting for connection...")
     nx.wait_for_connection(index)
